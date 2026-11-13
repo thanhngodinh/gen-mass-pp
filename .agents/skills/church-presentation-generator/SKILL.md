@@ -1,0 +1,20 @@
+---
+name: church-presentation-generator
+description: Tạo, sửa hoặc kiểm tra nội dung PowerPoint Thánh Lễ theo phôi, lịch hát và sheet nhạc cho Giáo xứ Tân Định.
+---
+
+# Tạo hoặc kiểm tra PowerPoint Thánh Lễ
+
+1. Kiểm tra registry có tool `ppt_*` và `church_*` của PowerPoint MCP. Nếu thiếu, làm theo [hướng dẫn MCP](../../rules/powerpoint_mcp_rule.md), bật/cấu hình server rồi yêu cầu reset Codex; xác nhận tool và gọi một tool chỉ đọc trước khi tiếp tục. Mọi thao tác đọc, sửa, kiểm tra và xuất preview PowerPoint đều dùng MCP.
+2. Xác định đúng ngày lễ, bài hát và thứ tự hát theo tin nhắn người dùng hoặc `week/<tuần>/in/calendar.md`. Khi người dùng nói đã tải từ Zalo hoặc nhờ tìm file, kiểm tra Downloads và thư mục tuần; đối chiếu tên file, ngày/tuần, nội dung và danh sách bài hát để chọn đúng PDF. Không chọn chỉ vì file mới nhất; nếu nhiều ứng viên vẫn chưa phân biệt được thì hỏi tên file hoặc ngày. Sao chép PDF đã xác định vào `week/<tuần>/in/`, giữ tên và bản gốc. Ghi lịch người dùng gửi vào `calendar.md` để dùng lại. Đọc trực tiếp từng trang PDF bằng vision; nếu cần, render trang thành ảnh rồi xem ảnh. Không dùng OCR hay trích xuất chữ tự động để lấy ca từ. Ghi lời đã đối chiếu vào `songs.json` khi cần. Giữ đúng phiên khúc và số lần lặp theo danh sách hát.
+3. Tiêu đề bìa/divider ưu tiên tên lễ kính/trọng thể chính xác; ghi kèm Chúa Nhật/tuần và năm phụng vụ khi cần. Tra bài đọc đúng ngày tại https://kpv.vn/liturgy/mass-readings, bao gồm câu đáp và Tin Mừng. Với lễ thường, ghi tiêu đề **ĐÁP CA**. Với Thứ Bảy/Chúa Nhật, dùng Halleluja trang đầu PDF và bỏ bài Halleluja nằm dưới Đáp Ca; Thứ Hai/Thứ Tư ưu tiên bài riêng nếu có. Tôn trọng chỉ định cụ thể của người dùng. Thứ Bảy luôn có thêm bài Hiệp Lễ cố định **Các Con Là Ánh Sáng**, ngoài các bài người dùng chọn; lấy lời và thứ tự phiên khúc/điệp khúc từ sheet nhạc hoặc kho bài chuẩn.
+4. Sao chép phôi người dùng chỉ định vào `week/<tuần>/out/`; nếu không có, dùng `resources/templates/master_template_sunday.pptx` cho Thứ Bảy/Chúa Nhật hoặc `master_template_monday.pptx` cho ngày thường. Mở bản sao bằng MCP, liệt kê section và chỉnh theo tên section. Giữ cả hai section Kinh Tin Kính Các Tông Đồ và Nicea trong phôi; thường ưu tiên Nicea, người trình chiếu tự chọn bản đọc. Giữ ảnh, font, cỡ chữ, bố cục, hiệu ứng, section và nội dung tĩnh của phôi. Nhân bản hoặc xóa slide nội dung để lời vừa khung; ưu tiên chia câu tự nhiên. Giữ cỡ chữ phôi; nếu cần chỉnh, dùng 32, 36, 40, 44, 48 hoặc 52 pt. Riêng toàn bộ ô tiêu đề dưới của bìa và slide chuyển cảnh dùng **24 pt**, viết **TN** thay cho Thường Niên.
+5. Đối chiếu nội dung và thứ tự hát với nguồn; kiểm tra chữ không tràn. Gọi `church_audit_slide` trên các slide tiêu biểu, xuất ảnh bằng `church_export_preview` vào `scratch/` và xem trực quan bìa, bài hát và bài đọc. Sửa bằng MCP khi cần, lưu file rồi trả đường dẫn và nêu giới hạn nếu có.
+
+## Chỉ kiểm tra PowerPoint có sẵn
+
+Khi người dùng yêu cầu kiểm tra PP, mở file bằng PowerPoint MCP ở chế độ chỉ đọc. Đọc toàn bộ slide và section, rồi đối chiếu tiêu đề/ngày lễ, bài đọc và Đáp Ca trên KPV, lời ca và thứ tự lặp với `calendar.md`/`songs.json` hoặc danh sách người dùng đã gửi. Kiểm tra các nội dung thừa/thiếu, bài đọc hoặc năm phụng vụ sai, lời ca thừa/thiếu so với lịch; với hai section Kinh Tin Kính thì ghi nhận cả hai là phương án chọn cho người trình chiếu, không tính là lỗi; và lỗi chữ dễ nhận thấy. Báo kết quả theo slide/section, nêu rõ điểm đúng, điểm sai và điểm chưa xác minh. Không chỉnh file trừ khi người dùng yêu cầu sửa.
+
+## Tiếp nhận file và kịch bản
+
+Khi người dùng gửi file, đường dẫn file hoặc nói đã tải xuống cùng nội dung lịch hát/kịch bản, tự xác định tuần và ngày từ tin nhắn, tên file và nội dung. Tạo `week/<tuần>/in/` nếu cần; sao chép PDF, phôi hoặc tài liệu đầu vào phù hợp vào đó, giữ bản gốc; ghi lịch, trình tự bài hát và số lần lặp vào `calendar.md`. Đọc tài liệu đã sao chép và tiếp tục quy trình tạo hoặc kiểm tra theo yêu cầu. Nếu nhiều file hoặc tuần vẫn không phân biệt được sau khi đối chiếu, hỏi người dùng trước khi chọn.
